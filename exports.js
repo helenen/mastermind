@@ -2,6 +2,13 @@ module.exports = {
     RED: Symbol.for('red'),
     BLUE: Symbol.for('blue'),
     GREEN: Symbol.for('green'),
+    getColors: function() { 
+        return [
+            this.RED,
+            this.BLUE,
+            this.GREEN
+        ];
+    },
     selectColors: (colors, size) => {
         let colorSelection = [];
         for(let i=0; i<size; i++) {

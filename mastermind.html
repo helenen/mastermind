@@ -1,17 +1,32 @@
 <html>
     <head>
         <title>Mastermind</title>
-        <script src="mastermind.js"></script>
+        <script type="module">
+            import {writeTurns, writeSlots} from './mastermind.js';
+            import {selectColors} from './exports.js';
+        </script>
+        <script type="text/javascript">
+            let [turns, slots, colors] = [10, 5, 3];
+            let state = {
+                turn : 1,
+                history : {}
+            };
+            let submit = [];
+            let result = selectColors(colors, slots);
+
+            writeTurns(document, state.history, turns);
+            writeSlots(document, slots, colors);
+        </script>
     </head>
     <body>
         <h1>Mastermind</h1>
         <div class="main">
-            <div class="turns"></div>
-            <div class="result"></div>
-            <div class="slots"></div>
-            <button onclick="play()">Jouer</button>
+            <div id="turns"></div>
+            <div id="result"></div>
+            <div id="slots"></div>
+            <button onclick="play(location, state, result)">Jouer</button>
         </div>
-        <div class="outcome"></div>
-        <button onclick="startOver()">Recommencer</button>
+        <div id="outcome"></div>
+        <button onclick="mastermind.startOver()">Recommencer</button>
     </body>
 </html>
