@@ -1,7 +1,7 @@
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
-const mastermind = require('./mastermind');
-const exp = require('./exports');
+import {writeTurns, writeSlots, play} from './mastermind.js';
+import {RED, BLUE, GREEN} from './exports.js';
 
 describe("Turn writer", function() {
     test('should return a list of turns', () => {
@@ -19,7 +19,7 @@ describe("Turn writer", function() {
           '<p>9 - </p>' +
           '<p>10 - </p>' +
         '</div>');
-      expect(mastermind.writeTurns(dom, history, 10)).toEqual(expected);
+      expect(writeTurns(dom, history, 10)).toEqual(expected);
     });
     test('should return as many turns as needed', () => {
       let history = {};
@@ -31,12 +31,12 @@ describe("Turn writer", function() {
           '<p>4 - </p>' +
           '<p>5 - </p>' +
         '</div>');
-      expect(mastermind.writeTurns(dom, history, 5)).toEqual(expected);
+      expect(writeTurns(dom, history, 5)).toEqual(expected);
     });
     test('should write all the info needed', () => {
       let history = {
         1 : {
-          colors : [exp.RED, exp.RED, exp.GREEN, exp.BLUE, exp.BLUE],
+          colors : [RED, RED, GREEN, BLUE, BLUE],
           correct : 3
         }
       };
@@ -57,7 +57,7 @@ describe("Turn writer", function() {
           '<p>7 - </p>' +
           '<p>8 - </p>' +
         '</div>');
-      expect(mastermind.writeTurns(dom, history, 8)).toEqual(expected);
+      expect(writeTurns(dom, history, 8)).toEqual(expected);
     });
 });
 
@@ -91,7 +91,7 @@ describe("Slots writer", function() {
           '<option>green' +
         '</select>' +
       '</div>');
-    expect(mastermind.writeSlots(dom, 5, 3)).toEqual(expected);
+    expect(writeSlots(dom, 5, 3)).toEqual(expected);
   });
   test('should return a list of the right size', () => {
     let dom = JSDOM.fragment('<div id="slots"></div>');
@@ -109,7 +109,7 @@ describe("Slots writer", function() {
           '<option>blue' +
         '</select>' +
       '</div>');
-    expect(mastermind.writeSlots(dom, 3, 2)).toEqual(expected);
+    expect(writeSlots(dom, 3, 2)).toEqual(expected);
   });
 });
 
@@ -119,18 +119,18 @@ describe("Play function", function() {
     history : {}
   };
   let submit = [
-    exp.RED,
-    exp.BLUE,
-    exp.GREEN,
-    exp.BLUE,
-    exp.RED,
+    RED,
+    BLUE,
+    GREEN,
+    BLUE,
+    RED,
   ];
   let result = [
-    exp.GREEN,
-    exp.GREEN,
-    exp.GREEN,
-    exp.GREEN,
-    exp.GREEN,
+    GREEN,
+    GREEN,
+    GREEN,
+    GREEN,
+    GREEN,
   ];
   let location = {
     reload : () => {
@@ -139,16 +139,16 @@ describe("Play function", function() {
     visited : false
   }
   test('should increase the turn count', () => {
-    expect(mastermind.play(location, state, submit, result).turn).toEqual(2);
+    expect(play(location, state, submit, result).turn).toEqual(2);
   });
   test('should write each attempt in the history', () => {
-    expect(mastermind.play(location, state, submit, result).history[1].colors).toEqual([exp.RED,exp.BLUE,exp.GREEN,exp.BLUE,exp.RED]);
+    expect(play(location, state, submit, result).history[1].colors).toEqual([RED,BLUE,GREEN,BLUE,RED]);
   });
   test('should write the number of correct slots for each attempt', () => {
-    expect(mastermind.play(location, state, submit, result).history[1].correct).toEqual(1);
+    expect(play(location, state, submit, result).history[1].correct).toEqual(1);
   });
   test('should refresh the page', () => {
-    mastermind.play(location, state, submit, result);
+    play(location, state, submit, result);
     expect(location.visited).toEqual(true);
   });
 });

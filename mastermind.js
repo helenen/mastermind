@@ -1,41 +1,38 @@
-const exp = require('./exports');
-const colorCodes = {
-  [exp.RED] : 'red',
-  [exp.BLUE] : 'blue',
-  [exp.GREEN] : 'green'
+import {getColors, compare} from './exports.js';
+
+export function writeTurns(dom, history, turns) {
+  dom.getElementById("turns").innerHTML = '';
+  for(let i=1; i <= turns; i++) {
+    let content = '';
+    if(history[i]) {
+      for(let u=0; u<history[i].colors.length; u++) {
+        content += '<div class="'+ history[i].colors[u] +'"></div> ';
+      }
+      if(history[i].correct > 0) content += ' - '+ history[i].correct +' bien placés';
+    }
+    dom.getElementById("turns").innerHTML += '<p><div class="turn">' + i + '- </div>' + content + '</p>';
+  }
+  return dom;
 }
 
-module.exports = {
-  writeTurns : (dom, history, turns) => {
-    for(i=1; i <= turns; i++) {
-      let content = '';
-      if(history[i]) {
-        for(u=0; u<history[i].colors.length; u++) {
-          content += '<span class="'+ colorCodes[history[i].colors[u]] +'"></span>';
-        }
-        if(history[i].correct > 0) content += ' - '+ history[i].correct +' bien placés';
-      }
-      dom.getElementById("turns").innerHTML += '<p>' + i + ' - ' + content + '</p>';
+export function writeSlots(dom, slots, colors) {
+  dom.getElementById("slots").innerHTML = '';
+  for(let i=1; i<=slots; i++) {
+    let content = '';
+    for(let u=0; u<colors; u++) {
+      content += '<option>' + getColors()[u];
     }
-    return dom;
-  },
-  writeSlots : (dom, slots, colors) => {
-    for(i=1; i<=slots; i++) {
-      let content = '';
-      for(u=0; u<colors; u++) {
-        content += '<option>' + colorCodes[exp.getColors()[u]];
-      }
-      dom.getElementById("slots").innerHTML += '<select id="' + i + '">' +  content + '</select>';
-    }
-    return dom;
-  },
-  play : (location, state, submit, result) => {
-    state.history[state.turn] = {
-      colors : submit,
-      correct : exp.compare(submit, result)
-    };
-    state.turn++;
-    location.reload();
-    return state;
+    dom.getElementById("slots").innerHTML += '<select id="' + i + '">' +  content + '</select>';
   }
+  return dom;
+}
+
+export function play(document, state, submit, result, turns) {
+  state.history[state.turn] = {
+    colors : submit,
+    correct : compare(submit, result)
+  };
+  state.turn++;
+  writeTurns(document, state.history, turns);
+  return state;
 }

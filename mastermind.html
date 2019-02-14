@@ -2,21 +2,51 @@
     <head>
         <title>Mastermind</title>
         <script type="module">
-            import {writeTurns, writeSlots} from './mastermind.js';
             import {selectColors} from './exports.js';
-        </script>
-        <script type="text/javascript">
+            import {writeTurns, writeSlots, play} from './mastermind.js';
             let [turns, slots, colors] = [10, 5, 3];
             let state = {
                 turn : 1,
                 history : {}
             };
-            let submit = [];
             let result = selectColors(colors, slots);
+            let submit = [];
 
             writeTurns(document, state.history, turns);
             writeSlots(document, slots, colors);
+
+            document.getElementById('playButton').addEventListener('click', () => {
+                for(let i=1; i<=slots; i++) {
+                    let element = document.getElementById(i);
+                    submit.push(element.options[element.selectedIndex].text);
+                }
+                play(document, state, submit, result, turns)
+                submit = [];
+            });
         </script>
+        <style type="text/css">
+            .red {
+                background-color: red;
+                width: 20px;
+                height: 20px;
+                display: inline-block;
+            }
+            .blue {
+                background-color: blue;
+                width: 20px;
+                height: 20px;
+                display: inline-block;
+            }
+            .green {
+                background-color: green;
+                width: 20px;
+                height: 20px;
+                display: inline-block;
+            }
+            .turn {
+                display: inline-block;
+            }
+        </style>
     </head>
     <body>
         <h1>Mastermind</h1>
@@ -24,9 +54,9 @@
             <div id="turns"></div>
             <div id="result"></div>
             <div id="slots"></div>
-            <button onclick="play(location, state, result)">Jouer</button>
+            <button id="playButton">Jouer</button>
         </div>
         <div id="outcome"></div>
-        <button onclick="mastermind.startOver()">Recommencer</button>
+        <button onclick="startOver()">Recommencer</button>
     </body>
 </html>
