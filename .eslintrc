@@ -1,14 +1,21 @@
 {
-    "extends": "eslint:recommended",
+    "extends": ["airbnb-base/legacy", "plugin:jest/recommended"],
     "rules": {
-      "quotes": [2, "single"], // On modifie cette règle car on préfère les single quotes
-    
+      "jest/no-disabled-tests": "warn",
+      "jest/no-focused-tests": "error",
+      "jest/no-identical-title": "error",
+      "jest/prefer-to-have-length": "warn",
+      "jest/valid-expect": "error",
+      "max-len": ["error", { "code": 150 }],
+      "no-global-assign": ["error", {"exceptions": ["Object"]}],
+      "func-names": ["error", "never"]
     },
     "parserOptions": {
-        "ecmaVersion": 2017
+        "ecmaVersion": 6
     },
-
     "env": {
-        "es6": true
-    }
+        "jest": true
+    },
+    "plugins": ["jest"]
+      
   }
