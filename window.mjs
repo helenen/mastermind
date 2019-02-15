@@ -1,4 +1,4 @@
-import {getColors, compare} from './exports.js';
+import {getColors, compare} from './game.mjs';
 
 export function writeTurns(dom, history, turns) {
   dom.getElementById("turns").innerHTML = '';
@@ -10,7 +10,7 @@ export function writeTurns(dom, history, turns) {
       }
       if(history[i].correct > 0) content += ' - '+ history[i].correct +' bien placés';
     }
-    dom.getElementById("turns").innerHTML += '<p><div class="turn">' + i + '- </div>' + content + '</p>';
+    dom.getElementById("turns").innerHTML += '<p><div class="turn">' + i + ' - </div>' + content + '</p>';
   }
   return dom;
 }

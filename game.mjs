@@ -10,9 +10,9 @@ export function getColors() {
     ];
 }
 
-export function selectColors(colors, size) {
+export function selectColors(colors, slots) {
     let colorSelection = [];
-    for(let i=0; i<size; i++) {
+    for(let i=0; i<slots; i++) {
         colorSelection.push(getColors()[Math.floor(Math.random() * colors)]);
     }
     return colorSelection;

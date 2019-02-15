@@ -2,8 +2,8 @@
     <head>
         <title>Mastermind</title>
         <script type="module">
-            import {selectColors} from './exports.js';
-            import {writeTurns, writeSlots, play} from './mastermind.js';
+            import {selectColors} from './game.mjs';
+            import {writeTurns, writeSlots, play} from './window.mjs';
             let [turns, slots, colors] = [10, 5, 3];
             let state = {
                 turn : 1,
