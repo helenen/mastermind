@@ -1,8 +1,10 @@
 {
     "scripts": {
-        "test": "jest"
+        "test": "jest",
+        "lint": "eslint ."
     },
     "devDependencies": {
+        "eslint": "^5.13.0",
         "jest": "^24.1.0"
     },
     "dependencies": {

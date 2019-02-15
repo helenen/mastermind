@@ -1,0 +1,14 @@
+{
+    "extends": "eslint:recommended",
+    "rules": {
+      "quotes": [2, "single"], // On modifie cette règle car on préfère les single quotes
+    
+    },
+    "parserOptions": {
+        "ecmaVersion": 2017
+    },
+
+    "env": {
+        "es6": true
+    }
+  }
