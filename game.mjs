@@ -27,11 +27,28 @@ export function compare(selection, result) {
 }
 
 export function isLastTurn(current, limit) {
-    if(current === limit) return true;
-    return false;
+    return current === limit;
 }
 
 export function hasWon(selection, result) {
-    if(this.compare(selection, result) === selection.length) return true;
-    return false;
+    return compare(selection, result) === selection.length;
+}
+
+export function deepCompare(selection, result) {
+    let count = 0;
+    let slot;
+    let resultCopy = [...result];
+    for(let i=0; i<selection.length; i++) {
+        if(selection[i] != result[i]) {
+            slot = -1;
+            for(let u=0; u<result.length; u++) {
+                if(selection[i] === resultCopy[u] && selection[u] != resultCopy[u]) slot = u;
+            }
+            if(slot != -1) {
+                count++;
+                resultCopy[slot] = null;
+            }
+        }
+    }
+    return count;
 }

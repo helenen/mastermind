@@ -2,8 +2,8 @@
     <head>
         <title>Mastermind</title>
         <script type="module">
-            import {selectColors} from './game.mjs';
-            import {writeTurns, writeSlots, play} from './window.mjs';
+            import {selectColors, isLastTurn, hasWon} from './game.mjs';
+            import {writeTurns, writeSlots, play, end} from './window.mjs';
             let [turns, slots, colors] = [10, 5, 3];
             let state = {
                 turn : 1,
@@ -20,25 +20,20 @@
                     let element = document.getElementById(i);
                     submit.push(element.options[element.selectedIndex].text);
                 }
-                play(document, state, submit, result, turns)
+                if(isLastTurn(state.turn, turns)) {
+                    document.getElementById("outcome").innerHTML = "<h1>You lost...</h1>";
+                    end(document, slots, result);
+                }
+                play(document, state, submit, result, turns);
+                if(hasWon(submit, result)) {
+                    document.getElementById("outcome").innerHTML = "<h1>You won !</h1>";
+                    end(document, slots, result);
+                }
                 submit = [];
             });
         </script>
         <style type="text/css">
-            .red {
-                background-color: red;
-                width: 20px;
-                height: 20px;
-                display: inline-block;
-            }
-            .blue {
-                background-color: blue;
-                width: 20px;
-                height: 20px;
-                display: inline-block;
-            }
-            .green {
-                background-color: green;
+            .slot {
                 width: 20px;
                 height: 20px;
                 display: inline-block;
@@ -56,7 +51,7 @@
             <div id="slots"></div>
             <button id="playButton">Jouer</button>
         </div>
-        <div id="outcome"></div>
-        <button onclick="startOver()">Recommencer</button>
+        <div id="outcome"><b>Result : </b></div>
+        <button onclick="location.reload()">Recommencer</button>
     </body>
 </html>

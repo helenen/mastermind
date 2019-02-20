@@ -44,12 +44,12 @@ describe('Turn writer', function () {
     let dom = JSDOM.fragment('<div id="turns"></div>');
     let expected = JSDOM.fragment('<div id="turns">'
           + '<p><div class="turn">1 - </div>'
-            + '<div class="red"></div> '
-            + '<div class="red"></div> '
-            + '<div class="green"></div> '
-            + '<div class="blue"></div> '
-            + '<div class="blue"></div> '
-            + ' - 3 bien placés</p>'
+            + '<div class="slot" style="background-color: red"></div> '
+            + '<div class="slot" style="background-color: red"></div> '
+            + '<div class="slot" style="background-color: green"></div> '
+            + '<div class="slot" style="background-color: blue"></div> '
+            + '<div class="slot" style="background-color: blue"></div> '
+          + ' - 3 bien placés</p>'
           + '<p><div class="turn">2 - </div></p>'
           + '<p><div class="turn">3 - </div></p>'
           + '<p><div class="turn">4 - </div></p>'
@@ -59,6 +59,41 @@ describe('Turn writer', function () {
           + '<p><div class="turn">8 - </div></p>'
         + '</div>');
     expect(window.writeTurns(dom, history, 8)).toEqual(expected);
+  });
+  test('should write how many are in the wrong slot', () => {
+    let history = {
+      1: {
+        colors: [game.RED, game.RED, game.GREEN, game.BLUE, game.BLUE],
+        correct: 0,
+        wrongSlot: 2
+      },
+      2: {
+        colors: [game.BLUE, game.BLUE, game.GREEN, game.BLUE, game.BLUE],
+        correct: 2,
+        wrongSlot: 2
+      }
+    };
+    let dom = JSDOM.fragment('<div id="turns"></div>');
+    let expected = JSDOM.fragment('<div id="turns">'
+          + '<p><div class="turn">1 - </div>'
+            + '<div class="slot" style="background-color: red"></div> '
+            + '<div class="slot" style="background-color: red"></div> '
+            + '<div class="slot" style="background-color: green"></div> '
+            + '<div class="slot" style="background-color: blue"></div> '
+            + '<div class="slot" style="background-color: blue"></div> '
+          + ' - 2 bons mais mal placés</p>'
+          + '<p><div class="turn">2 - </div>'
+            + '<div class="slot" style="background-color: blue"></div> '
+            + '<div class="slot" style="background-color: blue"></div> '
+            + '<div class="slot" style="background-color: green"></div> '
+            + '<div class="slot" style="background-color: blue"></div> '
+            + '<div class="slot" style="background-color: blue"></div> '
+          + ' - 2 bien placés - 2 bons mais mal placés</p>'
+          + '<p><div class="turn">3 - </div></p>'
+          + '<p><div class="turn">4 - </div></p>'
+          + '<p><div class="turn">5 - </div></p>'
+        + '</div>');
+    expect(window.writeTurns(dom, history, 5)).toEqual(expected);
   });
 });
 
@@ -138,9 +173,72 @@ describe('Play function', function () {
     expect(window.play(document, state, submit, result).turn).toEqual(2);
   });
   test('should write each attempt in the history', () => {
-    expect(window.play(document, state, submit, result).history[1].colors).toEqual([game.RED, game.BLUE, game.GREEN, game.BLUE, game.RED]);
+    expect(window.play(document, state, submit, result).history[2].colors).toEqual([game.RED, game.BLUE, game.GREEN, game.BLUE, game.RED]);
   });
   test('should write the number of correct slots for each attempt', () => {
-    expect(window.play(document, state, submit, result).history[1].correct).toEqual(1);
+    expect(window.play(document, state, submit, result).history[3].correct).toEqual(1);
+  });
+  test('should write the number of slots in the wrong place for each attempt', () => {
+    result[1] = game.RED;
+    expect(window.play(document, state, submit, result).history[4].wrongSlot).toEqual(1);
+  });
+});
+
+describe('Game ender', function () {
+  test('should end the game', () => {
+    let dom = JSDOM.fragment('<div id="result"></div>'
+      + '<div id="slots">'
+        + '<select id="1">'
+          + '<option>red'
+          + '<option>blue'
+          + '<option>green'
+        + '</select>'
+        + '<select id="2">'
+          + '<option>red'
+          + '<option>blue'
+          + '<option>green'
+        + '</select>'
+        + '<select id="3">'
+          + '<option>red'
+          + '<option>blue'
+          + '<option>green'
+        + '</select>'
+        + '<select id="4">'
+          + '<option>red'
+          + '<option>blue'
+          + '<option>green'
+        + '</select>'
+      + '</div>'
+      +'<button id="playButton">Jouer</button>');
+    let expected = JSDOM.fragment('<div id="result"><b>Result : </b>'
+    + '<div class="slot" style="background-color: red"></div> '
+    + '<div class="slot" style="background-color: blue"></div> '
+    + '<div class="slot" style="background-color: red"></div> '
+    + '<div class="slot" style="background-color: green"></div> '
+  + '</div>'
+  + '<div id="slots">'
+    + '<select id="1" disabled="true">'
+      + '<option>red'
+      + '<option>blue'
+      + '<option>green'
+    + '</select>'
+    + '<select id="2" disabled="true">'
+      + '<option>red'
+      + '<option>blue'
+      + '<option>green'
+    + '</select>'
+    + '<select id="3" disabled="true">'
+      + '<option>red'
+      + '<option>blue'
+      + '<option>green'
+    + '</select>'
+    + '<select id="4" disabled="true">'
+      + '<option>red'
+      + '<option>blue'
+      + '<option>green'
+    + '</select>'
+  + '</div>'
+  +'<button id="playButton" disabled="true">Jouer</button>');
+    expect(window.end(dom, 4, ['red','blue','red','green'])).toEqual(expected);
   });
 });
