@@ -8,10 +8,13 @@
       "jest/valid-expect": "error",
       "max-len": ["error", { "code": 150 }],
       "no-global-assign": ["error", {"exceptions": ["Object"]}],
-      "func-names": ["error", "never"]
+      "func-names": ["error", "never"],
+      "no-param-reassign": ["error", { "props": true , "ignorePropertyModificationsFor": ["dom","state"]}],
+      "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }]
     },
     "parserOptions": {
-        "ecmaVersion": 6
+        "ecmaVersion": 6,
+        "sourceType": "module"
     },
     "env": {
         "jest": true

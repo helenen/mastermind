@@ -209,7 +209,7 @@ describe('Game ender', function () {
           + '<option>green'
         + '</select>'
       + '</div>'
-      +'<button id="playButton">Jouer</button>');
+      + '<button id="playButton">Jouer</button>');
     let expected = JSDOM.fragment('<div id="result"><b>Result : </b>'
     + '<div class="slot" style="background-color: red"></div> '
     + '<div class="slot" style="background-color: blue"></div> '
@@ -238,7 +238,7 @@ describe('Game ender', function () {
       + '<option>green'
     + '</select>'
   + '</div>'
-  +'<button id="playButton" disabled="true">Jouer</button>');
-    expect(window.end(dom, 4, ['red','blue','red','green'])).toEqual(expected);
+  + '<button id="playButton" disabled="true">Jouer</button>');
+    expect(window.end(dom, 4, ['red', 'blue', 'red', 'green'])).toEqual(expected);
   });
 });
