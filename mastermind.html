@@ -4,23 +4,18 @@
         <script type="module">
             import {selectColors, isLastTurn, hasWon} from './game.mjs';
             import {writeTurns, writeSlots, play, end} from './window.mjs';
-            let [turns, slots, colors] = [10, 5, 3];
             let state = {
                 turn : 1,
                 history : {}
             };
-            let result = selectColors(colors, slots);
-            let submit = [];
-
-            writeTurns(document, state.history, turns);
-            writeSlots(document, slots, colors);
+            let [turns, slots, colors, result, submit] = [0, 0, 0, [], []];
 
             document.getElementById('playButton').addEventListener('click', () => {
                 for(let i=1; i<=slots; i++) {
                     let element = document.getElementById(i);
                     submit.push(element.options[element.selectedIndex].text);
                 }
-                if(isLastTurn(state.turn, turns)) {
+                if(isLastTurn(state.turn, parseInt(turns))) {
                     document.getElementById("outcome").innerHTML = "<h1>You lost...</h1>";
                     end(document, slots, result);
                 }
@@ -30,6 +25,18 @@
                     end(document, slots, result);
                 }
                 submit = [];
+            });
+            
+            document.getElementById('submitSetup').addEventListener('click', () => {
+                [turns, slots, colors] = [document.getElementById("turnsSetup").value, 
+                    document.getElementById("slotsSetup").value, 
+                    document.getElementById("colorsSetup").value];
+                result = selectColors(colors, slots);
+                writeTurns(document, state.history, turns);
+                writeSlots(document, slots, colors);
+                document.getElementById("setup").setAttribute("hidden", true);
+                document.getElementById("main").removeAttribute("hidden");
+                
             });
         </script>
         <style type="text/css">
@@ -45,13 +52,22 @@
     </head>
     <body>
         <h1>Mastermind</h1>
-        <div class="main">
+        <div class="setup" id="setup">
+            Nombre de tours :<br />
+            <input type="number" id="turnsSetup" min="1" max="20" value="10"><br />
+            Nombre de slots :<br />
+            <input type="number" id="slotsSetup" min="3" max="10" value="5"><br />
+            Nombre de couleurs :<br />
+            <input type="number" id="colorsSetup" min="3" max="10" value="5"><br />
+            <button id="submitSetup">Submit</button>
+        </div>
+        <div class="main" id="main" hidden="true">
             <div id="turns"></div>
             <div id="result"></div>
             <div id="slots"></div>
             <button id="playButton">Jouer</button>
+            <div id="outcome"><b>Result : </b></div>
+            <button onclick="location.reload()">Recommencer</button>
         </div>
-        <div id="outcome"><b>Result : </b></div>
-        <button onclick="location.reload()">Recommencer</button>
     </body>
 </html>

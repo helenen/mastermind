@@ -1,12 +1,26 @@
 export const RED = 'red';
 export const BLUE = 'blue';
 export const GREEN = 'green';
+export const PURPLE = 'purple';
+export const YELLOW = 'yellow';
+export const ORANGE = 'orange';
+export const BROWN = 'brown';
+export const GREY = 'grey';
+export const DARKBLUE = 'darkblue';
+export const DARKRED = 'darkred';
 
 export function getColors() {
     return [
         RED,
         BLUE,
-        GREEN
+        GREEN,
+        PURPLE,
+        YELLOW,
+        ORANGE,
+        BROWN,
+        GREY,
+        DARKBLUE,
+        DARKRED
     ];
 }
 
