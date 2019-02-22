@@ -37,10 +37,10 @@
                 writeSlots(document, slots, colors);
                 document.getElementById("setup").setAttribute("hidden", true);
                 document.getElementById("main").removeAttribute("hidden");
-                window.clearInterval(interval);
+                window.clearInterval(anticheat);
             });
 
-            let interval = window.setInterval(() => {
+            let anticheat = window.setInterval(() => {
                 let [selectedTurns, selectedSlots, selectedColors] = [document.getElementById("turnsSetup").value, 
                     document.getElementById("slotsSetup").value, 
                     document.getElementById("colorsSetup").value];
