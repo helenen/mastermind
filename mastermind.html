@@ -8,7 +8,7 @@
                 turn : 1,
                 history : {}
             };
-            let [turns, slots, colors, result, submit] = [0, 0, 0, [], []];
+            let [turns, slots, colors, result, submit, hasEnded] = [0, 0, 0, [], [], false];
 
             document.getElementById('playButton').addEventListener('click', () => {
                 for(let i=1; i<=slots; i++) {
@@ -18,11 +18,12 @@
                 if(isLastTurn(state.turn, parseInt(turns))) {
                     document.getElementById("outcome").innerHTML = "<h1>You lost...</h1>";
                     end(document, slots, result);
+                    hasEnded = true;
                 }
                 play(document, state, submit, result, turns);
                 if(hasWon(submit, result)) {
                     document.getElementById("outcome").innerHTML = "<h1>You won !</h1>";
-                    end(document, slots, result);
+                    if(!hasEnded) end(document, slots, result);
                 }
                 submit = [];
             });
@@ -36,8 +37,23 @@
                 writeSlots(document, slots, colors);
                 document.getElementById("setup").setAttribute("hidden", true);
                 document.getElementById("main").removeAttribute("hidden");
-                
+                window.clearInterval(interval);
             });
+
+            let interval = window.setInterval(() => {
+                let [selectedTurns, selectedSlots, selectedColors] = [document.getElementById("turnsSetup").value, 
+                    document.getElementById("slotsSetup").value, 
+                    document.getElementById("colorsSetup").value];
+                if(selectedTurns >= 1 &&
+                   selectedTurns <= 20 && 
+                   selectedSlots >= 3 && 
+                   selectedSlots <= 10 && 
+                   selectedColors >= 3 && 
+                   selectedColors <= 10)
+                    document.getElementById("submitSetup").removeAttribute("disabled");
+                else
+                    document.getElementById("submitSetup").setAttribute("disabled", true);
+            }, 100);
         </script>
         <style type="text/css">
             .slot {
@@ -66,7 +82,7 @@
             <div id="result"></div>
             <div id="slots"></div>
             <button id="playButton">Jouer</button>
-            <div id="outcome"><b>Result : </b></div>
+            <div id="outcome"></div>
             <button onclick="location.reload()">Recommencer</button>
         </div>
     </body>
