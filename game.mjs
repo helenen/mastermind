@@ -35,7 +35,7 @@ export function selectColors(colors, slots) {
 export function compare(selection, result) {
   let count = 0;
   for (let i = 0; i < selection.length; i++) {
-    if (selection[i] === result[i]) count++;
+    if (selection[i] === result[i]) count += 1;
   }
   return count;
 }
