@@ -1,0 +1,36 @@
+<html>
+    <head>
+        <title>Mastermind</title>
+        <script type="module" src="mastermind.js"></script>
+        <style type="text/css">
+            .slot {
+                width: 20px;
+                height: 20px;
+                display: inline-block;
+            }
+            .turn {
+                display: inline-block;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Mastermind</h1>
+        <div class="setup" id="setup">
+            Nombre de tours :<br />
+            <input type="number" id="turnsSetup" min="1" max="20" value="10"><br />
+            Nombre de slots :<br />
+            <input type="number" id="slotsSetup" min="3" max="10" value="5"><br />
+            Nombre de couleurs :<br />
+            <input type="number" id="colorsSetup" min="3" max="10" value="5"><br />
+            <button id="submitSetup">Submit</button>
+        </div>
+        <div class="main" id="main" hidden="true">
+            <div id="turns"></div>
+            <div id="result"></div>
+            <div id="slots"></div>
+            <button id="playButton">Jouer</button>
+            <div id="outcome"></div>
+            <button onclick="location.reload()">Recommencer</button>
+        </div>
+    </body>
+</html>
